@@ -1,18 +1,19 @@
 #include <iostream>
+#include <ctime>
 
-void PrintIntroduction(int difficulty) 
+void PrintIntroduction(int Difficulty) 
 {
-    std::cout << "\nYou are a secret agent breaking into a level " << difficulty << " secure server room...\n";
+    std::cout << "\nYou are a secret agent breaking into a level " << Difficulty << " secure server room...\n";
     std::cout << "You need to enter the correct codes to continue...\n\n";
 }
 
-bool PlayGame(int difficulty) 
+bool PlayGame(int Difficulty) 
 {
-    PrintIntroduction(difficulty);
+    PrintIntroduction(Difficulty);
     
-    const int CodeA = 2;
-    const int CodeB = 3;
-    const int CodeC = 4;
+    const int CodeA = (rand() % Difficulty) + Difficulty;
+    const int CodeB = (rand() % Difficulty) + Difficulty;
+    const int CodeC = (rand() % Difficulty) + Difficulty;
 
     const int CodeSum = CodeA + CodeB + CodeC;
     const int CodeProduct = CodeA * CodeB * CodeC;
@@ -28,8 +29,8 @@ bool PlayGame(int difficulty)
     int GuessProduct = GuessA * GuessB * GuessC;
 
     // Check if players guess is correct
-    if(GuessSum == CodeSum && GuessProduct == CodeProduct) {
-        std::cout << "\nYou're in!\n";
+    if (GuessSum == CodeSum && GuessProduct == CodeProduct) {
+        std::cout << "\nYou're in! Move on to the next door.\n";
         return true;
     } else {
         std::cout << "\nYou've been caught, run!\n";
@@ -39,8 +40,10 @@ bool PlayGame(int difficulty)
 
 int main()
 {
+    srand(time(NULL)); // create new random seed
     int LevelDifficulty = 1;
-    while(LevelDifficulty <= 10) 
+    // Play game until maximum difficulty is reached
+    while (LevelDifficulty <= 10) 
     {
     
         bool bLevelComplete = PlayGame(LevelDifficulty);
@@ -50,9 +53,12 @@ int main()
         if (bLevelComplete)
         {
             ++LevelDifficulty;
+        } else 
+        {
+            --LevelDifficulty;
         }
         
     }
-
+    std::cout << "Congradulations you made it into the server room, hack away";
     return 0;
 }
